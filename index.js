@@ -28,6 +28,9 @@ var users = [
   },
 ];
 
+var oldText = 'esta es una nota pequeña';
+
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -40,7 +43,7 @@ app.listen(3000, function () {
 })
 
 app.get('/', function (req, res) {
-  res.sendfile('index.html');
+  res.sendfile('register.html');
   console.log('request of /')
 })
 
@@ -76,4 +79,19 @@ app.post('/users/:username', function (req, res) {
   console.log(newUser);
   users.push(newUser);
   res.send(users);
+})
+
+app.get('/docs', function (req, res) {
+  res.sendfile('docs.html');
+})
+
+app.get('/docs/oldText', function (req, res) {
+  res.send(oldText);
+
+})
+
+app.post('/docs/newText', function(req, res){
+   oldText = oldText +" "+  req.body.oldText;
+   res.send(oldText);
+   console.log(oldText);
 })

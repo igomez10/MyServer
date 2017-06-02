@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <script <script src="https://unpkg.com/axios/dist/axios.min.js">
+
+    </script>
+</head>
+
+<body>
+    <div align=center>
+        <h2>Old:</h2>
+        <div>
+            <p id='oldText'></p>
+        </div>
+    </div>
+    <div align='center'>
+        <input style="width:20em;height:20em;" id='input' type="text">
+        <button id='btnSave'>SAVE</button>
+    </div>
+
+    <script>
+        var oldText = '';
+        axios.get('/docs/oldText')
+            .then(function (res) {
+                document.getElementById('oldText').innerHTML = res.data;
+            })
+            .catch(function (err) {
+                console.log("error:" + err);
+            })
+
+        document.getElementById('btnSave').addEventListener('click', function () {
+            newText = document.getElementById('input').value;
+            axios.post('/docs/newText', {
+                oldText: newText
+            })
+                .then(function (res) {
+                    console.log(res.data);
+                    document.getElementById('oldText').innerHTML = res.data;
+                    document.getElementById('input').value = '';
+                })
+                .catch(function (err) {
+                    console.log("error" + err);
+                })
+
+        })
+    </script>
+</body>
+
+</html>
