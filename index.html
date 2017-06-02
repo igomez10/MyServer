@@ -1,0 +1,62 @@
+<head>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <form>
+        <input type="text" placeholder="username" id="username">
+        <input type="text" placeholder="mail" id="mail">
+        <input type="text" placeholder="name" id="name">
+        <input type="text" placeholder="lastName" id="lastName">
+        <input type="date" id="birthday">
+        <button id='send' type="submit" form="form1" value="Submit">Submit</button>
+    </form>
+    <ul id="users">
+
+    </ul>
+
+    <script>
+        var users;
+
+        axios.get('users')
+            .then(function (res) {
+                users = res.data;
+                usersList = [];
+                users.map(function (user) {
+                    usersList.push("<li>" + user.name + "</li>");
+                })
+                console.log(res.data)
+                document.getElementById('users').innerHTML = usersList;
+            })
+            .catch(function (err) {
+                console.log("error" + err);
+            })
+
+        document.getElementById('send').addEventListener('click', function () {
+            newUser = {
+                name: document.getElementById('name').value,
+                lastName: document.getElementById('lastName').value,
+                username: document.getElementById('username').value,
+                mail: document.getElementById('mail').value,
+                birthday: document.getElementById('birthday').value,
+            }
+
+            axios.post('users/' + document.getElementById('username').value,
+                {
+                    user: newUser
+                })
+                .then(function (res) {
+                    console.log(res.data);
+                    users = res.data;
+                    usersList = [];
+                    users.map(function (user) {
+                        usersList.push("<li>" + user.name + "</li>");
+                    })
+                    document.getElementById('users').innerHTML = usersList;
+                })
+                .catch(function (err) {
+                    console.log(err);
+                })
+        });
+    </script>
+</body>
